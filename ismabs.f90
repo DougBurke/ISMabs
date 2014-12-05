@@ -5,6 +5,13 @@
 !  Version 1.0 June 2014
 !  (Without Ni and Zn in this version)
 !
+! Additions to version 1.0a
+! - the model now prints a message to STDOUT if it is unable to
+!   read from the AtomicData.fits file
+! - the ISMABSROOT xset variable has been added to allow the
+!   location of the AtomicData.fits file to be changed from within
+!   X-Spec
+!
 ! To-Do:
 ! - Add turbulence
 ! - Add molecular-solid cross sections
@@ -114,29 +121,48 @@ subroutine read_cross_sections(bnene,xs,ifl)
 !
 !  This routine reads all cross sections and puts them on a given grid
 !
+!  It uses the X-Spec local variable/dictionary value ISMABSROOT
+!  to locate the data file. If this is not set then it uses
+!  the setting of the local_dir parameter below (which should be
+!  changed to match the location of the data file). The path -
+!  however it is given - should point to the location that contains
+!  the atomic_data/ directory - i.e. it loads
+!      <path>/atomic_data/AtomicData.fits
+!
    implicit none
 
    integer,parameter :: nion=30, out_unit=20
    integer :: bnene, ifl, i, j, status
    integer :: nemax(0:nion)
    double precision :: ener(0:nion,bnene), xs(0:nion,bnene)
-   character (len=240) :: filename2
+   character (*), parameter :: fileloc = '/atomic_data/AtomicData.fits'
+   character (len=283) :: filename2
    character (len=240) :: local_dir = '/Users/javier/local-xspec-models/ismabs/last/Ismabs'
+   character (len=255) :: ismabs_root = ''
    integer inunit,readwrite,blocksize
    integer :: hdutype,colnum
    integer :: felem=1, nulld=0
    logical :: anynull
 
+   character (len=255) :: fgmstr
+   external :: fgmstr
+
 !Number of elements for each ion cross section.  
    do i=0,nion
       nemax(i)=650000
    enddo
-    
+
+! Where do we look for the data?
+   ismabs_root = trim(fgmstr('ISMABSROOT'))
+   if (ismabs_root .EQ. '') then
+     ismabs_root = local_dir
+   endif
+
 ! parameters to specify the opening process  
   status=0
   readwrite=0
   blocksize=1
-  filename2=trim(local_dir)//'/atomic_data/AtomicData.fits'
+  filename2=trim(ismabs_root) // fileloc
 
 ! Get an unused Logical Unit Number to use to open the FITS file.
   call ftgiou(inunit,status)

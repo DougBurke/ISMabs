@@ -28,7 +28,7 @@ spectral fits. Fit parameters comprise the column densities of
 abundant contributors that allow direct estimates of ionization
 states.
 
-# OBTAINING ISMabs
+# Obtaining ISMabs
 
 As of this writing, the ISMabs package is not included as 
 part of the standard xspec software, either within heasoft 
@@ -40,9 +40,11 @@ The contents of the tarfile include:
 
  * `atomic_data/AtomicData.fits`
 
-    Atomic database binary fits file.  This must reside in the
+    Atomic database binary fits file.  This should reside in the
     directory atomic_data inside the folder where the model is
-    located.
+    located, although it can be moved by setting the ISMABSROOT
+    xset variable, as described below in the Atomic Data
+    section below.
 
  * `ismabs.f90`
 
@@ -60,7 +62,7 @@ The contents of the tarfile include:
 
     This file.
 
-# INSTALLATION
+# Installation
 
 You can use the compile.sh file to install the model by doing
 
@@ -94,7 +96,25 @@ After the build is complete type
 In subsequent  sessions you don't neet to do the initpackage 
 step again, just the lmod.
 
-# PARAMETERS
+# Atomic data
+
+With the default set up - that is, if you have run `compile.sh`,
+the model will look for the cross-section data file in 
+`atomic_data/AtomicData.fits`, relative to the directory in which
+the module is located.
+
+The X-Spec XSET command can be used to set the ISMABSROOT variable;
+if this is set then it is used instead of the path to the module. So
+after
+
+    xset ISMABSROOT /data/ismabs/
+
+then the model will use the file /data/ismabs/atomic_data/AtomicData.fits
+(so the ISMABSROOT refers to the directory containing the atomic_data/
+directory). Note that ISMABSROOT over-rides any changes made by
+running `compile.sh` when building the model.
+
+# Parameters
 
 Inside of xspec, the model can be invoked by typing 
 
@@ -114,7 +134,7 @@ See
 [Gatuzz et al. (2014b)](http://adslabs.org/adsabs/abs/2014ApJ...790..131G/)
 for details.
 
-# CONTACT
+# Contact
 
 This package is still being tested. Please contact me with 
 any reports or questions.
