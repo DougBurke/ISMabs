@@ -171,6 +171,21 @@ subroutine read_cross_sections(bnene,xs,ifl)
   colnum=colnum+1
  enddo
 
+! Report on errors (done before closing the file in case the error
+! comes from closing the file). Unfortunately the X-Spec API does not
+! provide a way to signal an error to the calling code, so a screen
+! message is used, using the same method used to report the model
+! the first time it is used. This also makes it simpler for using
+! this model in systems other than X-Spec. The better solution,
+! at least for X-Spec users, would probably be to use the
+! X-Spec logging API.
+!
+! This message could be displayed only once, but it is probaly worth
+! repeating each time it is used.
+ if (status .ne. 0) then
+  print *, 'ERROR reading cross sections from ', filename2
+ endif
+
 !  Close the file and free the unit number
  call ftclos(inunit, status)
  call ftfiou(-1, status)
