@@ -28,6 +28,8 @@ distributed version control system for such code, so that
 For this example I picked git and GitHub, but could have used one of
 the other systems.
 
+------------------------------------------------------------------------
+
 # ISMabs
 
 ISMabs is an X-ray photoabsorption model for the interstellar medium
