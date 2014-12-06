@@ -3,21 +3,20 @@
 case $OSTYPE in
     darwin*)
 	libname=libismabs.dylib
-	rm -f $libname
 	sed -i.ori "s,local_dir = '.*',local_dir = \'`pwd`\'," ismabs.f90
-	echo "initpackage ismabs lmodel.dat "`pwd`"\nquit\ny" | xspec
 	;;
 
     # Fall through to the linux setting
     #linux-gnu)
     *)
 	libname=libismabs.so
-	rm -f $libname
 	sed -i "s,local_dir = '.*',local_dir = \'`pwd`\'," ismabs.f90
-	echo "initpackage ismabs lmodel.dat "`pwd`"\nquit\ny" | xspec
 	;;
 
 esac
+
+rm -f $libname
+echo "initpackage ismabs lmodel.dat "`pwd`"\nquit\ny" | xspec
 
 if [ ! -f $libname ]
 then
