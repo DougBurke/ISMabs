@@ -158,6 +158,13 @@ then the model will use the file /data/ismabs/atomic_data/AtomicData.fits
 directory). Note that ISMABSROOT over-rides any changes made by
 running `compile.sh` when building the model.
 
+The location of the file can be found by setting the X-Spec chatter
+level to 20 or higher - e.g.
+
+    chatter 20
+
+*before* evaluating the model.
+
 # Parameters
 
 Inside of xspec, the model can be invoked by typing 

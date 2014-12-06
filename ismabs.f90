@@ -136,9 +136,11 @@ subroutine read_cross_sections(bnene,xs,ifl)
    integer :: nemax(0:nion)
    double precision :: ener(0:nion,bnene), xs(0:nion,bnene)
    character (*), parameter :: fileloc = '/atomic_data/AtomicData.fits'
-   character (len=283) :: filename2
-   character (len=240) :: local_dir = '/Users/javier/local-xspec-models/ismabs/last/Ismabs'
+   character (*), parameter :: ismreadchat = 'ismabs: reading from '
+   character (len=255 + 29) :: filename2 ! len(fileloc)
+   character (len=240) :: local_dir = '/home/naridge/data/xspec/hack'
    character (len=255) :: ismabs_root = ''
+   character (len=len(ismreadchat)+len(filename2)) :: chatmsg = ''
    integer inunit,readwrite,blocksize
    integer :: hdutype,colnum
    integer :: felem=1, nulld=0
@@ -162,7 +164,10 @@ subroutine read_cross_sections(bnene,xs,ifl)
   status=0
   readwrite=0
   blocksize=1
+
   filename2=trim(ismabs_root) // fileloc
+  chatmsg=ismreadchat // filename2
+  call xwrite(chatmsg, 20)
 
 ! Get an unused Logical Unit Number to use to open the FITS file.
   call ftgiou(inunit,status)
@@ -201,15 +206,13 @@ subroutine read_cross_sections(bnene,xs,ifl)
 ! comes from closing the file). Unfortunately the X-Spec API does not
 ! provide a way to signal an error to the calling code, so a screen
 ! message is used, using the same method used to report the model
-! the first time it is used. This also makes it simpler for using
-! this model in systems other than X-Spec. The better solution,
-! at least for X-Spec users, would probably be to use the
-! X-Spec logging API.
+! the first time it is used. An alternative would be to use xwrite()
+! with a low chatter level.
 !
 ! This message could be displayed only once, but it is probaly worth
 ! repeating each time it is used.
  if (status .ne. 0) then
-  print *, 'ERROR reading cross sections from ', filename2
+  write (*,*) 'ERROR: unable to read cross sections from ', filename2
  endif
 
 !  Close the file and free the unit number
