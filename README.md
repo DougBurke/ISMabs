@@ -15,6 +15,8 @@ small improvements:
    that allows users to override the compiled-in path to the
    cross-section data file
 
+ - the compilation script has seen some minor improvements
+
 The main reason for this fork is to act as an example of using a
 distributed version control system for such code, so that 
 
