@@ -1,4 +1,33 @@
 
+# Note: this is not the official version of the ISMabs model
+
+This is an 
+[X-Spec user model](http://heasarc.nasa.gov/docs/xanadu/xspec/newmodels.html).
+Is is a fork of the official code, which can be obtained from
+<http://hea-www.cfa.harvard.edu/~javier/ismabs/>. This version has some
+small improvements:
+
+ - prints a warning message if there are problems reading in the
+   cross-section data (`atomic_data/AtomicData.fits`)
+
+ - add the `ISMABSROOT` 
+   [xset variable](http://heasarc.nasa.gov/xanadu/xspec/manual/XSxset.html)
+   that allows users to override the compiled-in path to the
+   cross-section data file
+
+The main reason for this fork is to act as an example of using a
+distributed version control system for such code, so that 
+
+ - we do not have to rely on University web pages to access the code
+
+ - there is easy access to previous versions
+
+ - it can make it easier for other users to contribute changes or
+   take over development and maintenance 
+
+For this example I picked git and GitHub, but could have used one of
+the other systems.
+
 # ISMabs
 
 ISMabs is an X-ray photoabsorption model for the interstellar medium
@@ -34,7 +63,11 @@ As of this writing, the ISMabs package is not included as
 part of the standard xspec software, either within heasoft 
 or as part of standalone xspec.  Instead, it must be downloaded 
 and installed separately from
-<http://hea-www.cfa.harvard.edu/~javier/ismabs/>.
+<http://hea-www.cfa.harvard.edu/~javier/ismabs/>
+(official version) or via git for this version:
+
+    git clone https://github.com/DougBurke/ISMabs.git
+    cd ISMabs
 
 The contents of the tarfile include:
 
@@ -42,7 +75,7 @@ The contents of the tarfile include:
 
     Atomic database binary fits file.  This should reside in the
     directory atomic_data inside the folder where the model is
-    located, although it can be moved by setting the ISMABSROOT
+    located, although it can be moved by setting the `ISMABSROOT`
     xset variable, as described below in the Atomic Data
     section below.
 
@@ -67,6 +100,13 @@ The contents of the tarfile include:
 You can use the compile.sh file to install the model by doing
 
     sh compile.sh
+
+The script does two things
+
+ - change the code so that it looks for the cross section
+   data in the current working directory
+
+ - compiles the model using X-Spec
 
 In the  model folder or you can setting up and using this 
 model is as described in the xspec manual:
@@ -134,10 +174,14 @@ See
 [Gatuzz et al. (2014b)](http://adslabs.org/adsabs/abs/2014ApJ...790..131G/)
 for details.
 
-# Contact
+# Contact (original code)
 
 This package is still being tested. Please contact me with 
 any reports or questions.
 
 egatuzz@ivic.gob.ve
 
+# Contact (fork)
+
+Please use the [Issues Page](https://github.com/DougBurke/ISMabs/issues)
+if you have any problems with this code.
